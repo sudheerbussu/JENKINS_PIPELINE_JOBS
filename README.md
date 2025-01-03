@@ -1,0 +1,2 @@
+# JENKINS_PIPELINE_JOBS
+agent_any_parallel_when_parameters_triggers_checkout
