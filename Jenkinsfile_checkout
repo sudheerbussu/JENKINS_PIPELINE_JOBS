@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+
+    environment {
+        GIT_URL = 'https://github.com/jaintpharsha/oct-2024.git'
+        GIT_BRANCH = 'main'
+        GIT_CREDENTIALS = 'github_jaintpharsha'
+    }
+
+    stages {
+        stage('CHECKOUT') {
+            steps {
+                script {
+                    //  checkout([$class: 'GitSCM',
+                    //           branches: [[name: "${env.GIT_BRANCH}"]],
+                    //           userRemoteConfigs: [[credentialsId: "${env.GIT_CREDENTIALS}",
+                    //                                url: "${env.GIT_URL}"]]])
+
+                    checkout scmGit(branches: [[name: '*/main']],
+                                    extensions: [],
+                                    userRemoteConfigs: [[credentialsId: 'github_jaintpharsha',
+                                                         url: 'https://github.com/jaintpharsha/oct-2024.git']])
+                }
+            }
+        }
+
+        stage('CHECK') {
+            steps {
+                sh '''
+                    ls -lrt
+                    echo $GIT_BRANCH
+                    env
+                '''
+            }
+        }
+    }
+}

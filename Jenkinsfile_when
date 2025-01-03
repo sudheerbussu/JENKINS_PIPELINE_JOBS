@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('CHECKOUT') {
+            steps {
+                script {
+                    //  checkout([$class: 'GitSCM',
+                    //           branches: [[name: "${env.GIT_BRANCH}"]],
+                    //           userRemoteConfigs: [[credentialsId: "${env.GIT_CREDENTIALS}",
+                    //                                url: "${env.GIT_URL}"]]])
+
+                    checkout scmGit(branches: [[name: 'main']],
+                                    userRemoteConfigs: [[credentialsId: 'github_jaintpharsha',
+                                                         url: 'https://github.com/jaintpharsha/oct-2024.git']])
+                }
+            }
+        }
+
+        // stage('check branch') {
+        //     steps {
+        //        script {
+        //             def branch = env.GIT_BRANCH
+        //             echo "CURRENT_BARNCH: ${branch}"
+
+        //             if (branch == 'origin/main') {
+        //                 echo "THis is main branch"
+        //                 sh 'ls -lrt'
+        //             } else {
+        //                 echo "Skip the statements in this stage"
+        //             }
+        //        }
+        //     }
+        // }
+
+        stage('STAGE1') {
+            when {
+                expression {
+                    env.GIT_BRANCH == 'origin/main'
+                }
+            }
+            steps {
+               echo "main branch"
+               sh 'sleep 4'
+            }
+        }
+
+        stage('STAGE2') {
+
+            steps {
+                echo "main branch"
+                sh 'sleep 4'
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}

@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    options {
+        ansiColor('xterm')
+        buildDiscarder(logRotator(numToKeepStr: '5'))
+        // disableConcurrentBuilds(abortPrevious: true)
+        // timeout(time: 5, unit: 'SECONDS')
+        // timestamps()
+    }
+
+    triggers {
+        // cron('*/2 * * * *')
+        pollSCM('* * * * *')
+    }
+
+    stages {
+
+        stage('STAGE1') {
+            steps {
+               sh 'sleep 4'
+            }
+        }
+    }
+}

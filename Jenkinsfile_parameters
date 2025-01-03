@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+
+    parameters {
+        booleanParam name: 'RUN_PROJECT', defaultValue: false, description: 'Deploy or Not'
+        string name: 'env_target', defaultValue: '', description: 'Target server to deploy'
+        choice name: 'CHOOSE', choices: ['test', 'stagging', 'pre-prod', 'prod'], description: 'Choose an option to run the job'
+    }
+
+    stages {
+
+        stage('STAGE1') {
+            steps {
+               echo "BOOLEAN: ${params.RUN_PROJECT}"
+               echo "STRING: ${params.env_target}"
+               echo "CHOICE: ${params.CHOOSE}"
+            }
+        }
+    }
+}

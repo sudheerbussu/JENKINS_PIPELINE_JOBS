@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    parameters {
+        choice name: 'CHOOSE', choices: ['STAGE1', 'STAGE2'], description: 'Choose stage to build'
+    }
+
+    stages {
+
+        stage('CHECKOUT') {
+            steps {
+                script {
+                    checkout scmGit(branches: [[name: 'main']],
+                                    userRemoteConfigs: [[credentialsId: 'github_jaintpharsha',
+                                                         url: 'https://github.com/jaintpharsha/oct-2024.git']])
+                }
+            }
+        }
+
+        stage('STAGE1') {
+            when {
+                expression {
+                    params.CHOOSE == 'STAGE1'
+                }
+            }
+            steps {
+               echo "This is STAGE 1"
+               sh 'sleep 4'
+            }
+        }
+
+        stage('STAGE2') {
+            when {
+                expression {
+                    params.CHOOSE == 'STAGE2'
+                }
+            }
+            steps {
+                echo "This is STAGE 2"
+                sh 'sleep 4'
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
